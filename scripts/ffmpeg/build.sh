@@ -23,7 +23,7 @@ done
 
 for NAME in ${FFMPEG_DISABLED_LIBRARIES[@]}
 do
-  ADDITIONAL_COMPONENTS+="$NAME"
+  ADDITIONAL_COMPONENTS+=" $NAME"
 done
 
 # Referencing dependencies without pkgconfig
