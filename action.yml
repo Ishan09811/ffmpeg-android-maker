@@ -30,7 +30,7 @@ inputs:
   output-dir:
     description: "Directory where FFmpeg will output its build result"
     required: false
-    default: "${GITHUB_ACTION_PATH}/output"
+    default: "${GITHUB_ACTION_PATH}"
 
   extra-args:
     description: "Additional flags passed to FFmpeg"
@@ -52,7 +52,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: |
-          ${{ inputs.output-dir }}
+          ${{ inputs.output-dir }}/output
         key: ffmpeg-${{ inputs.version }}-${{ inputs.abis }}-${{ inputs.android-api }}-${{ hashFiles('${GITHUB_ACTION_PATH}/ffmpeg-android-maker.sh') }}
         restore-keys: |
           ffmpeg-${{ inputs.version }}-${{ inputs.abis }}-${{ inputs.android-api }}-
@@ -64,8 +64,8 @@ runs:
         export ANDROID_SDK_HOME=${{ inputs.sdk-path }}
         export ANDROID_NDK_HOME=${{ inputs.ndk-path }}
         
-        if [ -d "${{ inputs.output-dir }}" ]; then
-          echo "Using cached FFmpeg build"
+        if [ -d "${{ inputs.output-dir }}/output" ]; then
+          echo "Found cached FFmpeg build"
         else
           ${GITHUB_ACTION_PATH}/ffmpeg-android-maker.sh \
             -android=${{ inputs.android-api }} \
@@ -73,7 +73,7 @@ runs:
             --source-tar=${{ inputs.version }} \
             ${{ inputs.extra-args }}
 
-            if [ "${{ inputs.output-dir }}" != "${GITHUB_ACTION_PATH}/output" ]; then
+            if [ "${{ inputs.output-dir }}" != "${GITHUB_ACTION_PATH}" ]; then
               mv ${GITHUB_ACTION_PATH}/output "${{ inputs.output-dir }}"
             fi
         fi
