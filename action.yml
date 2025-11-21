@@ -70,6 +70,7 @@ runs:
           ${GITHUB_ACTION_PATH}/ffmpeg-android-maker.sh \
             -android=${{ inputs.android-api }} \
             -abis=${{ inputs.abis }} \
+            --source-tar=${{ inputs.version }} \
             ${{ inputs.extra-args }}
         fi
 
