@@ -30,7 +30,7 @@ inputs:
   output-dir:
     description: "Directory where FFmpeg will output its build result"
     required: false
-    default: "./output"
+    default: "${GITHUB_ACTION_PATH}/output"
 
   extra-args:
     description: "Additional flags passed to FFmpeg"
@@ -46,16 +46,16 @@ runs:
     - name: Build FFmpeg
       shell: bash
       run: |
-        chmod +x ./ffmpeg-android-maker.sh
+        chmod +x ${GITHUB_ACTION_PATH}/ffmpeg-android-maker.sh
         export ANDROID_SDK_HOME=${{ inputs.sdk-path }}
         export ANDROID_NDK_HOME=${{ inputs.ndk-path }}
-        ./ffmpeg-android-maker.sh \
+        ${GITHUB_ACTION_PATH}/ffmpeg-android-maker.sh \
           -android=${{ inputs.android-api }} \
           -abis=${{ inputs.abis }} \
           ${{ inputs.extra-args }}
 
         if [ "${{ inputs.output-dir }}" != "./output" ]; then
-          mv ./output "${{ inputs.output-dir }}"
+          mv ${GITHUB_ACTION_PATH}/output "${{ inputs.output-dir }}"
         fi
 
 outputs:
