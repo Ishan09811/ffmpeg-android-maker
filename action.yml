@@ -3,7 +3,7 @@ description: "Build FFmpeg for Android"
 author: "Ishan09811 & Javernaut(creator of the actual script)"
 
 branding:
-  icon: "gear"
+  icon: "package"
   color: "purple"
   
 inputs:
