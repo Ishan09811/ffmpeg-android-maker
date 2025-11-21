@@ -39,10 +39,11 @@ Add a step in your GitHub Actions workflow:
 After this step finishes, your project will contain:
 
 ```
-<output-dir>/
- ├── include/
- └── lib/
-      └── ABI eg. arm64v8a/
+<output-dir>
+ └── output/
+      ├── include/
+      └── lib/
+         └── ABI eg. arm64v8a/
 ```
 
 You can then link these in your CMakeLists.
