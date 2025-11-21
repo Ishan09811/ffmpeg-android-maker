@@ -52,7 +52,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: |
-          ${GITHUB_ACTION_PATH}/output
+          ${{ inputs.output-dir }}
         key: ffmpeg-${{ inputs.version }}-${{ inputs.abis }}-${{ inputs.android-api }}-${{ hashFiles('${GITHUB_ACTION_PATH}/ffmpeg-android-maker.sh') }}
         restore-keys: |
           ffmpeg-${{ inputs.version }}-${{ inputs.abis }}-${{ inputs.android-api }}-
@@ -72,10 +72,10 @@ runs:
             -abis=${{ inputs.abis }} \
             --source-tar=${{ inputs.version }} \
             ${{ inputs.extra-args }}
-        fi
 
-        if [ "${{ inputs.output-dir }}" != "${GITHUB_ACTION_PATH}/output" ]; then
-          mv ${GITHUB_ACTION_PATH}/output "${{ inputs.output-dir }}"
+            if [ "${{ inputs.output-dir }}" != "${GITHUB_ACTION_PATH}/output" ]; then
+              mv ${GITHUB_ACTION_PATH}/output "${{ inputs.output-dir }}"
+            fi
         fi
 
 outputs:
