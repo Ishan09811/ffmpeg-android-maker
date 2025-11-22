@@ -102,6 +102,9 @@ for ABI in ${FFMPEG_ABIS_TO_BUILD[@]}
 do
   # Exporting variables for the current ABI
   source ${SCRIPTS_DIR}/export-build-variables.sh ${ABI}
+  echo "Components: ${#COMPONENTS_TO_BUILD[@]}"
+  printf '%s\n' "${COMPONENTS_TO_BUILD[@]}"
+
   TOTAL_COMPONENTS=${#COMPONENTS_TO_BUILD[@]}
   INDEX=0
 
