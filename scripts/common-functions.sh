@@ -19,20 +19,38 @@ function downloadTarArchive() {
   if [[ ! -d "$LIBRARY_SOURCES" ]]; then
 
     TOTAL_SIZE=$(curl -sI "$DOWNLOAD_URL" | awk '/Content-Length/ {print $2}' | tr -d '\r')
-    
+
+    if [[ -z "$TOTAL_SIZE" ]]; then
+        USE_SPINNER=true
+    else
+        USE_SPINNER=false
+    fi
+
     curl -L --silent "$DOWNLOAD_URL" -o "$ARCHIVE_NAME" &
     CURL_PID=$!
 
+    SPIN=('|' '/' '-' '\\')
+    i=0
+
     while kill -0 "$CURL_PID" 2>/dev/null; do
-      if [[ -f "$ARCHIVE_NAME" ]]; then
-        CUR_SIZE=$(stat -c%s "$ARCHIVE_NAME" 2>/dev/null)
-        PERCENT=$(( CUR_SIZE * 100 / TOTAL_SIZE ))
-        echo -ne "\r$ARCHIVE_NAME Progress: ${PERCENT}%"
-      fi
-      sleep 0.2
+        if [[ "$USE_SPINNER" = true ]]; then
+            i=$(( (i+1) % 4 ))
+            echo -ne "\r$ARCHIVE_NAME Downloading: ${SPIN[$i]}"
+        else
+            if [[ -f "$ARCHIVE_NAME" ]]; then
+                CUR_SIZE=$(stat -c%s "$ARCHIVE_NAME" 2>/dev/null)
+                PERCENT=$(( CUR_SIZE * 100 / TOTAL_SIZE ))
+                echo -ne "\r$ARCHIVE_NAME Progress: ${PERCENT}%"
+            fi
+        fi
+        sleep 0.2
     done
 
-    echo -e "\r$ARCHIVE_NAME Progress: 100%"
+    if [[ "$USE_SPINNER" = true ]]; then
+        echo -e "\r$ARCHIVE_NAME Downloading: Done "
+    else
+        echo -e "\r$ARCHIVE_NAME Progress: 100%"
+    fi
 
     EXTRACTION_DIR="."
     if [ "$NEED_EXTRA_DIRECTORY" = true ] ; then
