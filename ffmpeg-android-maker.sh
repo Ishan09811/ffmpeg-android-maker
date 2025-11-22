@@ -69,8 +69,8 @@ source ${SCRIPTS_DIR}/export-host-variables.sh
 source ${SCRIPTS_DIR}/parse-arguments.sh
 
 # Treating FFmpeg as just a module to build after its dependencies
-COMPONENTS_TO_BUILD=${EXTERNAL_LIBRARIES[@]}
-COMPONENTS_TO_BUILD+=( "ffmpeg" )
+COMPONENTS_TO_BUILD=("${EXTERNAL_LIBRARIES[@]}")
+COMPONENTS_TO_BUILD+=("ffmpeg")
 
 # Get the source code of component to build
 for COMPONENT in ${COMPONENTS_TO_BUILD[@]}
@@ -98,13 +98,12 @@ do
 done
 
 # Main build loop
-TOTAL_COMPONENTS=${#COMPONENTS_TO_BUILD[@]}
-INDEX=0
-
 for ABI in ${FFMPEG_ABIS_TO_BUILD[@]}
 do
   # Exporting variables for the current ABI
   source ${SCRIPTS_DIR}/export-build-variables.sh ${ABI}
+  TOTAL_COMPONENTS=${#COMPONENTS_TO_BUILD[@]}
+  INDEX=0
 
   for COMPONENT in ${COMPONENTS_TO_BUILD[@]}
   do
